@@ -74,4 +74,4 @@ function response(data)
         */
     }
                 
-$.get('http://localhost:8001', response);
+$.get('http://'.asdf().':8001', response);
