@@ -19,8 +19,9 @@ function get_hhmmss(ms)
 
 function response(data)
     {
-        console.log(data);
         var stats = $( data.firstElementChild.innerHTML ).find('.streamstats');
+        
+        console.log(data);
         
         var html5_audio_player =
             '<audio controls preload="none" id="audio" oncontextmenu="return false;">'
