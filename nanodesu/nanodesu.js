@@ -67,7 +67,7 @@ function append_main()
                 $('#second_td').append('<br><br>');
                 
                 // Download
-                $('#second_td').append('Download: <a href="http://tinyurl.com/nanodesu-ogg-m3u">m3u</a>');
+                $('#second_td').append('Download: <a href="http://tinyurl.com/nanodesu-nossl-ogg-m3u">m3u</a>');
             }
     }
 
