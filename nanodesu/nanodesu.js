@@ -39,7 +39,7 @@ function search_google(input)
                 var images  = [];
                 while(match = search.exec(r)) { images.push(match[1]); }
                 
-                var image_node = '<img id ="cover" src="'+images[0]+'"><br><br></img>';
+                var image_node = '<img id ="cover" width="200" height="200" src="'+images[0]+'"><br><br></img>';
                 
                 $('#cover').html(image_node);
             });
