@@ -35,7 +35,9 @@ function search_google(input)
                 var images  = [];
                 while(match = search.exec(r)) { images.push(match[1]); }
                 
-                $('#third_td').prepend('<img src="'+images[0]+'"></img><br><br>');
+                var image_node = '<img id ="cover" src="'+images[0]+'"><br><br></img>';
+                
+                $('#cover').html(image_node);
             });
     }
 
@@ -61,31 +63,35 @@ function append_main()
                 $('#second_td').append('<br><br>');
                 
                 // Download
-                $('#second_td').append('Downoad: <a href="http://tinyurl.com/nanodesu-m3u">m3u</a>');
-                
-                // <td>
-                $('tr').append('<td id="third_td">');
+                $('#second_td').append('Download: <a href="http://tinyurl.com/nanodesu-m3u">m3u</a>');
             }
     }
 
-function update_metadata(match, stream_name, stream_current, stream_peak, uptime)
-    {
-        // Erase
-        $('#third_td').html('');
-                        
-        var name_node    = 'Playing:'   + '<br>- ' + (match ? match[1] : stream_name)+ '<br><br>';
-        var current_node = 'Listening:' + '<br>- ' + stream_current                  + ' people<br><br>';
-        var peak_node    = 'Peak:'      + '<br>- ' + stream_peak                     + ' people<br><br>';
-        var uptime_node  = 'Uptime:'    + '<br>- ' + uptime                          +  '<br><br>';
+function update_metadata(stream_name, stream_current, stream_peak, stream_url, uptime)
+    {                        
+        var name_node    = '<text id="playing">Playing:'     + '<br>- ' + stream_name    + '<br><br></text>';
+        var url_node     = '<text id="url">Url:'             + '<br>- ' + stream_url     + '<br><br></text>';
+        var current_node = '<text id="listening">Listening:' + '<br>- ' + stream_current + ' people<br><br></text>';
+        var peak_node    = '<text id="peak">Peak:'           + '<br>- ' + stream_peak    + ' people<br><br></text>';
+        var uptime_node  = '<text id="uptime">Uptime:'       + '<br>- ' + uptime         + '<br><br></text>';
         
-        // Name and url
-        $('#third_td').append(name_node);
         
-        if(match) { $('#third_td').append('Url:' + '<br>- '+ match[2] + '<br><br>'); }
-                
-        $('#third_td').append(current_node);    // Listening
-        $('#third_td').append(peak_node);       // Peak
-        $('#third_td').append(uptime_node);     // Uptime
+        if(stream_name != prev_name) { $('#playing').html(name_node); }
+        
+        if(stream_url == '')
+            {
+                $('#url').hide();
+            }
+        else if(stream_url != prev_url)
+            {
+                $('#url').show();
+                $('#url').html(url_node);
+            }
+        
+        if(stream_current != prev_current) { $('#current').html(current_node); }
+        if(stream_peak    != prev_peak   ) { $('#peak').html(peak_node);       }
+        
+        $('#uptime').html(uptime_node);
     }
 
 function get_metadata(data)
@@ -99,44 +105,52 @@ function get_metadata(data)
                         var stream_current = $(stats[1]).text();
                         var stream_peak    = $(stats[2]).text();
                         var stream_genre   = $(stats[3]).text();
-                        var stream_url     = $(stats[4]).text();
+                        //var stream_url     = $(stats[4]).text();
                         var stream_name    = $(stats[5]).text();
         
                         var uptime = get_hhmmss(new Date() - Date.parse(stream_started));
                 
+                        
                         // Get title url
                         var match = [];
                         var url_regex = /(.+) - url: (.+)/;
                 
                         match = url_regex.exec(stream_name);
+                        
+                        
+                        stream_name = match ? match[1] : stream_name;
+                        stream_url  = match ? match[2] : '';
         
                         // Second td -- Main data
                         if($('#audio').length == 0) { append_main(); }
                 
-                        if(stream_name != previous_name)
-                            {
-                                // Third td - Metadata
-                                update_metadata
-                                    (
-                                        match,
-                                        stream_name,
-                                        stream_current,
-                                        stream_peak,
-                                        uptime
-                                    );
+                        // Third td - Metadata
+                        update_metadata
+                            (
+                                stream_name,
+                                stream_current,
+                                stream_peak,
+                                stream_url,
+                                uptime
+                            );
                 
-                                // Search cover
-                                search_google((match ? match[1] : stream_name)+' cover');
-                            }
+                        // Search cover
+                        if(stream_name != prev_name) { search_google((match ? match[1] : stream_name)+' cover'); }
                         
-                        previous_name = stream_name;
+                        prev_name    = stream_name;
+                        prev_current = stream_current;
+                        prev_peak    = stream_peak;
+                        prev_url     = stream_url;
                     }
             });
 
-        window.setTimeout(get_metadata, 60000);
+        window.setTimeout(get_metadata, 30000);
     }
                 
 
-var previous_name = '';
+var prev_name    = '';
+var prev_current = '';
+var prev_peak    = '';
+var prev_url     = '';
 
 get_metadata();
