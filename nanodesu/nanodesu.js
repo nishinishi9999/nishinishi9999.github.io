@@ -50,7 +50,7 @@ function response(data)
                 $('#second_td').last().append('<br><br>');
                 
                 // Download
-                $('#second_td').last().append('Downoad: <a href="http://tinyurl.com/nanodesu-m3u">m3u</a>');
+                $('#second_td').last().append('Downoad: <a href="http://tinyurl.com/nanodesu-ssl-m3u">m3u</a>');
                 
                 // <td>
                 $('tr').last().append('<td id="third_td">');
