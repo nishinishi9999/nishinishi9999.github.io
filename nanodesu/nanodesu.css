@@ -2,6 +2,9 @@ body {
     background-color: #fcf3cf;
 }
 
+#second_td {
+    padding-left: 10px;
+}
 #third_td {
-    padding-left: 50px;
+    padding-left: 70px;
 }
