@@ -1,0 +1,141 @@
+monachat.pm documentation
+
+Methods exported by this module
+--------------------------------
+- Constructor
+    - new
+
+- Basic getters/setters
+    - name / id / character / status / trip / ihash / r / g / b / x / y / scl
+
+- Configuration getters/setters
+     - addr / port / attrib / server / room / proxy / site / timeout / debug / version
+
+- Utility functions
+    - send
+    - change_(name/character/trip/rgb/x/y/scl/x_y_scl)
+    - relogin / change_room / reenter / can_read / data / rgb / x_y_scl
+
+- Network functions
+    - connect / connect_proxy / disconnect / enter_room
+    - is_down / is_connected / can_ping / ping / read_socket
+
+- Signals
+    - login / exit_room / comment / change_status / ignore
+
+- Proxy functions
+    - proxies_left / next_proxy / get_proxy_list
+    
+------------------------------------------------------------------------------------------------
+
+- Constructor
+
+new([%data]):
+
+It accepts a hash of data as an initialization of session data, which may contain:
+
+name   - Session name
+char   - Character type
+status - Initial status
+trip   - Initial trip
+r      - Initial r
+g      - Initial g
+b      - Initial b
+x      - Initial x position
+y      - Initial y position
+scl    - Initial scl position
+
+addr   - Socket address
+port   - Socket port
+
+server - Monachat server to connect to, which is one of the following:
+iriguchi, ooheya, chibichato, moa, chiikibetsu, wadaibetsu, tateyokoheya, cool, kanpu, monafp
+
+room   - Monachat server room
+proxy  - 1 or 0
+site   - 1 or 2, 2 contains a much lager list but 1 is faster (probably)
+to     - Timeout between reconnection tries or proxy timeout
+debug  - Show proxy debug information (1 or 0)
+socks  - Socks version (3 or 4)
+
+handle_name    - Wether to cut the name down to 40 characters if it's longer thatn that (0 or 1).
+handle_stat    - Same as name, but with status.
+handle_comment - Same, but with comments.
+handle_ihash   - Wether to cut down ihashes to the last 6 chars or not (0 or 1).
+
+
+- getters/setters
+
+name / id / character / status / trip / ihash / r / g / b / x / y / scl:
+addr / port / attrib / server / room / proxy / site / timeout / debug / version
+
+Set value if there is one, return value if there isn't, usually used internally.
+
+
+- Utility functions
+
+send($data):
+Sends raw data to socket with \0 termination and encoded in utf8.
+
+change_name($name):
+change_character($character):
+change_trip($trip):
+change_rgb($r, $g, $b):
+change_x($y):
+change_($y):
+change_scl($scl):
+change_x_y_scl($x, $y, $scl):
+Changes value and relogins if there is need to do so.
+
+relogin():
+Relogins to monachat and reenters current room.
+
+change_room($room):
+Exit current room and changes it.
+
+reenter():
+Exits current room and enter it again.
+
+can_read($t):
+Waits $t seconds and returns data if there is data stored in socket buffer or undef on fail.
+
+rgb($r, $g, $b):
+Set rgb values.
+
+x_y_scl($x, $y, $scl):
+Set x y and scl values.
+
+
+can_read($t):
+Interface to $select->can_read($t). Takes timeout and returns 1 on success or undef otherwise.
+
+data(%data):
+Bulk data getter/setter, note that you can't set id and ihash with setter:
+- Setter data: 
+- Getter data: 
+
+rgb($r, $g, $b):
+Utility function for r(), g() and b()
+
+x_y_scl():
+Utility function to x(), y() and scl()
+
+
+- Network functions
+
+connect():
+Open a IO::Socket::INET socket to monachat and send a login signal
+
+disconnect():
+Stop reading and writing from socket and close it
+
+can_ping():
+Check if enough time has passed so that a ping signal can be sent. Returns 1 on success and undef on failure.
+
+read_socket([$t], [$c],):
+Read from socket with a timeout of $t seconds and a character limit of $c characters.
+
+proxies_left():
+Get number of proxies left on proxy array.
+
+get_proxy_list() - Download new proxy list.
