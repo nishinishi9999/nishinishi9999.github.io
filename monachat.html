@@ -3,28 +3,28 @@ monachat.pm documentation
 <h2>Methods exported by this module</h2>
 
 - Constructor<br>
-    - new<br><br>
+&nbsp&nbsp&nbsp&nbsp- new<br><br>
 
 - Basic getters/setters<br>
-    - name / id / character / status / trip / ihash / r / g / b / x / y / scl<br><br>
+&nbsp&nbsp&nbsp&nbsp- name / id / character / status / trip / ihash / r / g / b / x / y / scl<br><br>
 
 - Configuration getters/setters<br>
-     - addr / port / attrib / server / room / proxy / site / timeout / debug / version<br><br>
+&nbsp&nbsp&nbsp&nbsp- addr / port / attrib / server / room / proxy / site / timeout / debug / version<br><br>
 
 - Utility functions<br>
-    - send<br>
-    - change_(name/character/trip/rgb/x/y/scl/x_y_scl)<br>
-    - relogin / change_room / reenter / can_read / data / rgb / x_y_scl<br><br>
+&nbsp&nbsp&nbsp&nbsp- send<br>
+&nbsp&nbsp&nbsp&nbsp- change_(name/character/trip/rgb/x/y/scl/x_y_scl)<br>
+&nbsp&nbsp&nbsp&nbsp- relogin / change_room / reenter / can_read / data / rgb / x_y_scl<br><br>
 
 - Network functions<br>
-    - connect / connect_proxy / disconnect / enter_room<br>
-    - is_down / is_connected / can_ping / ping / read_socket<br><br>
+&nbsp&nbsp&nbsp&nbsp- connect / connect_proxy / disconnect / enter_room<br>
+&nbsp&nbsp&nbsp&nbsp- is_down / is_connected / can_ping / ping / read_socket<br><br>
 
 - Signals<br>
-    - login / exit_room / comment / change_status / ignore<br><br>
+&nbsp&nbsp&nbsp&nbsp- login / exit_room / comment / change_status / ignore<br><br>
 
 - Proxy functions<br>
-    - proxies_left / next_proxy / get_proxy_list<br><br>
+&nbsp&nbsp&nbsp&nbsp- proxies_left / next_proxy / get_proxy_list<br><br>
 
 
 <h2>CONSTRUCTOR</h2>
@@ -32,34 +32,34 @@ monachat.pm documentation
 new([%data]):<br>
 It accepts a hash of data as an initialization of session data, which may contain:<br><br>
 
-name   - Session name<br>
-char   - Character type<br>
-status - Initial status<br>
-trip   - Initial trip<br>
-r      - Initial r<br>
-g      - Initial g<br>
-b      - Initial b<br>
-x      - Initial x position<br>
-y      - Initial y position<br>
-scl    - Initial scl position<br><br>
+name&nbsp&nbsp&nbsp- Session name<br>
+char&nbsp&nbsp&nbsp- Character type<br>
+status&nbsp- Initial status<br>
+trip&nbsp&nbsp&nbsp- Initial trip<br>
+r&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp- Initial r<br>
+g&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp- Initial g<br>
+b&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp- Initial b<br>
+x&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp- Initial x position<br>
+y&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp- Initial y position<br>
+scl&nbsp&nbsp&nbsp&nbsp- Initial scl position<br><br>
 
-addr   - Socket address<br>
-port   - Socket port<br><br>
+addr&nbsp&nbsp&nbsp- Socket address<br>
+port&nbsp&nbsp&nbsp- Socket port<br><br>
 
 server - Monachat server to connect to, which is one of the following:<br>
 iriguchi, ooheya, chibichato, moa, chiikibetsu, wadaibetsu, tateyokoheya, cool, kanpu, monafp<br><br>
 
-room   - Monachat server room<br>
-proxy  - 1 or 0<br>
-site   - 1 or 2, 2 contains a much lager list but 1 is faster (probably)<br>
-to     - Timeout between reconnection tries or proxy timeout<br>
-debug  - Show proxy debug information (1 or 0)<br>
-socks  - Socks version (3 or 4)<br><br>
+room&nbsp&nbsp&nbsp- Monachat server room<br>
+proxy&nbsp&nbsp- 1 or 0<br>
+site&nbsp&nbsp&nbsp- 1 or 2, 2 contains a much lager list but 1 is faster (probably)<br>
+to&nbsp&nbsp&nbsp&nbsp&nbsp- Timeout between reconnection tries or proxy timeout<br>
+debug&nbsp&nbsp- Show proxy debug information (1 or 0)<br>
+socks&nbsp&nbsp- Socks version (3 or 4)<br><br>
 
-handle_name    - Wether to cut the name down to 40 characters if it's longer thatn that (0 or 1).<br>
-handle_stat    - Same as name, but with status.<br>
-handle_comment - Same, but with comments.<br>
-handle_ihash   - Wether to cut down ihashes to the last 6 chars or not (0 or 1).<br><br>
+handle_name&nbsp&nbsp&nbsp&nbsp- Wether to cut the name down to 40 characters if it's longer thatn that (0 or 1).<br>
+handle_stat&nbsp&nbsp&nbsp&nbsp&nbsp- Same as name, but with status.<br>
+handle_comment&nbsp- Same, but with comments.<br>
+handle_ihash&nbsp&nbsp&nbsp- Wether to cut down ihashes to the last 6 chars or not (0 or 1).<br><br>
 
 
 <h2>GETTERS/SETTERS</h2>
