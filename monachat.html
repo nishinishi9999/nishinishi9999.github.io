@@ -1,6 +1,6 @@
 monachat.pm documentation
 <br><br>
-<h2>Methods exported by this module</h2><br>
+<h2>Methods exported by this module</h2>
 
 - Constructor<br>
     - new<br><br>
@@ -27,7 +27,7 @@ monachat.pm documentation
     - proxies_left / next_proxy / get_proxy_list<br><br>
 
 
-<h2>CONSTRUCTOR</h2><br>
+<h2>CONSTRUCTOR</h2>
 
 new([%data]):<br>
 It accepts a hash of data as an initialization of session data, which may contain:<br><br>
@@ -62,7 +62,7 @@ handle_comment - Same, but with comments.<br>
 handle_ihash   - Wether to cut down ihashes to the last 6 chars or not (0 or 1).<br><br>
 
 
-<h2>GETTERS/SETTERS</h2><br>
+<h2>GETTERS/SETTERS</h2>
 
 name / id / character / status / trip / ihash / r / g / b / x / y / scl<br>
 addr / port / attrib / server / room / proxy / site / timeout / debug / version<br><br>
@@ -70,7 +70,7 @@ addr / port / attrib / server / room / proxy / site / timeout / debug / version<
 Set value if there is one, return value if there isn't, usually used internally.<br><br>
 
 
-<h2>UTILITY FUNCTIONS</h2><br>
+<h2>UTILITY FUNCTIONS</h2>
 
 send($data):<br>
 Sends raw data to socket with \0 termination and encoded in utf8.<br><br>
