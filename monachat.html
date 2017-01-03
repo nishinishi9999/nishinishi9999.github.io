@@ -24,10 +24,10 @@ Methods exported by this module<br>
     - login / exit_room / comment / change_status / ignore<br><br>
 
 - Proxy functions<br>
-    - proxies_left / next_proxy / get_proxy_list<br><br><br>
+    - proxies_left / next_proxy / get_proxy_list<br><br>
 
 
-<h1>CONSTRUCTOR</h1><br><br>
+<h2>CONSTRUCTOR</h2><br>
 
 new([%data]):<br>
 It accepts a hash of data as an initialization of session data, which may contain:<br><br>
@@ -59,18 +59,18 @@ socks  - Socks version (3 or 4)<br><br>
 handle_name    - Wether to cut the name down to 40 characters if it's longer thatn that (0 or 1).<br>
 handle_stat    - Same as name, but with status.<br>
 handle_comment - Same, but with comments.<br>
-handle_ihash   - Wether to cut down ihashes to the last 6 chars or not (0 or 1).<br><br><br>
+handle_ihash   - Wether to cut down ihashes to the last 6 chars or not (0 or 1).<br><br>
 
 
-<h1>GETTERS/SETTERS</h1><br><br>
+<h2>GETTERS/SETTERS</h2><br>
 
 name / id / character / status / trip / ihash / r / g / b / x / y / scl<br>
 addr / port / attrib / server / room / proxy / site / timeout / debug / version<br><br>
 
-Set value if there is one, return value if there isn't, usually used internally.<br><br><br>
+Set value if there is one, return value if there isn't, usually used internally.<br><br>
 
 
-<h1>UTILITY FUNCTIONS</h1><br><br>
+<h2>UTILITY FUNCTIONS</h2><br>
 
 send($data):<br>
 Sends raw data to socket with \0 termination and encoded in utf8.<br><br>
@@ -115,10 +115,10 @@ rgb($r, $g, $b):<br>
 Utility function for r(), g() and b()<br><br>
 
 x_y_scl():<br>
-Utility function to x(), y() and scl()<br><br><br>
+Utility function to x(), y() and scl()<br><br>
 
 
-<h1>NETWORK FUNCTIONS</h1><br><br>
+<h2>NETWORK FUNCTIONS</h2><br>
 
 connect():<br>
 Open a IO::Socket::INET socket to monachat and send a login signal<br><br>
