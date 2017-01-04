@@ -49,7 +49,7 @@ function append_main()
     {
         var html5_audio_player =
             '<audio controls preload="none" id="audio" oncontextmenu="return false;">'
-          +     '<source src="http://'+asdf()+'/stream?type=.mp3" type="audio/mp3">'
+          +     '<source src="http://'+asdf()+':8001/stream.ogg" type="audio/ogg">'
           + '</audio>';
 
         var html5_video_player =
