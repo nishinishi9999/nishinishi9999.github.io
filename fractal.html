@@ -1,0 +1,88 @@
+<!DOCTIPE html>
+
+<html>
+    <head>
+        <meta charset="utf8">
+        <link rel="stylesheet" href="css/fractal_style.css">
+        <link rel="stylesheet" href="css/metro.min.css">
+        <!--<link rel="stylesheet" href="css/materialize.min.css">-->
+        
+        <script src="lib/jquery.min.js"></script>
+        <script src="lib/complex.js"></script>
+        
+        <!--<script src="lib/metro.min.js"></script>-->
+        <!--<script src="http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>-->
+        <!--<script src="ndarray.js"></script>-->
+        <!--<script src="lib/numjs.min.js"></script>-->
+    </head>
+
+    <body>
+        <table id="table">
+            <tr>
+                <td id="input_td">
+                    <table id="input_table">
+                        <!--Size-->
+                        <tr id="sizetr">
+                            <td><text>Size:</text></td>
+                            <td class="texttd"><input type="text" id="size"></input></td>
+                        </tr>
+                        
+                        <!--Times-->
+                        <tr id="timestr">
+                            <td><text>Times:</text></td>
+                            <td class="texttd"><input type="text" id="times"></input></td>
+                        </tr>
+                        
+                        <!--Fsize-->
+                        <tr id="fsizetr">
+                            <td><text>Fsize:</text></td>
+                            <td class="texttd"><input type="text" id="fsize"></input></td>
+                        </tr>
+                        
+                        <!--expn-->
+                        <tr id="expntr">
+                            <td><text>Expn:</text></td>
+                            <td class="texttd"><input type="text" id="expn"></input></td>
+                        </tr>
+                        
+                        <!--set-->
+                        <tr id="settr">
+                            <td><text>Set:</text></td>
+                            <td class="texttd"><input type="text" id="set"></input></td>
+                        </tr>
+                        
+                        <!--z0-->
+                        <tr id="z0tr">
+                            <td><text>z0:</text></td>
+                            <td class="texttd"><input type="text" id="z0"></input></td>
+                        </tr>
+                        
+                        <!--threadn-->
+                        <tr id="threadtr">
+                            <td><text>Threadn:</text></td>
+                            <td class="texttd"><input type="text" id="threadn"></input></td>
+                        </tr>
+                        
+                        <!--antialias-->
+                        <tr id="aatr">
+                            <td id="aatd" colspan="2">
+                                <label class="switch">
+                                    <input id="aacheck" type="checkbox">
+                                        <span class="check"></span> &nbsp&nbspAntialias
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                <td>
+                    
+                <!--Canvas-->
+                <td id="canvastd">
+                    <canvas id="canvas" width="400" height="400"></canvas>
+                </td>
+            </tr>
+        </table>
+    </body>
+        
+    <script src="js/fractal.js"></script>
+
+</html>
