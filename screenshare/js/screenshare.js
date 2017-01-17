@@ -24,7 +24,6 @@ var constraints =
             {
                 width      : 1280,
                 height     : 720,
-                mediaSource: 'window'
             }
     }
 
