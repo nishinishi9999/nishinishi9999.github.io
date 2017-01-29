@@ -1,131 +1,130 @@
-/**** Global variables ****/
-
-var default_to = 10;
-var tps        = {};
-var pool       = {};
+// tripper.js
+importScripts('DES.js', 'crypt3.js');
 
 
+//---- Constants ---------------------------------------------------------------------------------------------------
 
-/**** Functions ****/
+const CHAR_N = 8;
 
-function add_search_table(target, id)
+const char_list =
+    (
+        'a b c d e f g h i j k l m n o p q r s t u v w x y z '
+      + 'A B C E D F G H I J K L M N O P Q R S T U V W X Y Z '
+      + '0 1 2 3 4 5 6 7 8 9'
+    ).split(' ');
+//     . / ! " $ % & ( ) = ? { } [ ]'.split(' ');
+    
+const table =
     {
-        var table =
-              '<br><br>'
-            + '<center><table class="search_table search_table_'+id+'">'
-            + '    <tr class="search_tr">'
-            + '        <th class="search_th">Target</th>'
-            + '        <th class="search_th">Found</th>'
-            + '        <th class="search_th pwd_cell">Pwd</th>'
-            + '        <th class="search_th trip_cell">Trip</th>'
-            + '        <th class="search_th">Timeout</th>'
-            + '        <th class="search_th pause_cell">Pause</th>'
-            + '        <th class="search_th remove_cell">Remove</th>'
-            + '    </tr>'
-            + '    <tr class="search_tr">'
-            + '        <td class="search_td"><text id="target_'            +id+'">'+target+'</text></td>'
-            + '        <td class="search_td"><text id="found_'             +id+'">0</text></td>'
-            + '        <td class="search_td pwd_cell"><text id="pwd_'      +id+'">0</text></td>'
-            + '        <td class="search_td trip_cell"><text id="trip_'    +id+'">0</text></td>'
-            + '        <td class="search_td">'
-            + '            <input type="text" value="10" class="timeout_input" id="to_'          +id+'"></text>'
-            + '        </td>'
-            + '        <td class="search_td pause_cell"><text id="pause_'  +id+'">0</text></td>'
-            + '        <td class="search_td remove_cell"><text id="remove_'+id+'">0</text></td>'
-            + '    </tr>'
-            + '</table></center>';
+        ':' : 'A',
+        ';' : 'B',
+        '<' : 'C',
+        '=' : 'D',
+        '>' : 'E',
+        '?' : 'F',
+        '@' : 'a',
+        '[' : 'b',
+        '\\': 'c',
+        ']' : 'd',
+        '^' : 'e',
+        '_' : 'f',
+        '`' : 'g'
+    };
 
-        $('body').append(table);
+//---- Functions ---------------------------------------------------------------------------------------------------
+
+var char_list_len = char_list.length;
+function rand_pwd()
+    {
+        var pwd = '';
         
-        $('.timeout_input').keypress( function(e)
+        for(let n = 0; n < CHAR_N; n++)
             {
-                if(e.which == 13)
-                    {
-                        e.preventDefault();
+                pwd += char_list[parseInt(Math.random()*char_list_len)];
+            }
 
-                        var timeout = e.target.value;
-                        if(timeout == 0) { return; } ////
-                        
-                        var id = e.target.id.substr(3);
-                    
-                        pool[id].postMessage
-                            ({
-                                'type'   : 'timeout',
-                                'timeout': timeout
-                            });
-                    }
-            });
+        return pwd;
     }
 
+function get_salt(key)
+    {
+        var salt = (key+'H.').substr(1, 2);
+        
+        salt = salt.replace(/[^\.-z]/, '.');
+        for(let n in table) { salt = salt.replace(n, table[n]) }
+        
+        return salt;
+    }
 
-function init_worker(target, id)
-    {                        
-        var worker = new Worker('tripperjs/js/tripper.js');
-        worker.onmessage = on_worker_msg;
-        pool[id] = worker;
-                    
-        worker.postMessage
+function send_tps()
+    {
+        var time = (new Date().getTime() - this.start_time) / 1000;
+        var tps  = this.trip_n / time;
+        
+        postMessage
             ({
-                'type'   : 'init',
-                'id'     : id,
-                'target' : target,
-                'timeout': default_to
+                'type': 'tps',
+                'id'  : this.id,
+                'tps' : parseInt(tps)
             });
     }
 
-function on_worker_msg(e)
+var pwd, salt, hash;
+function main()
     {
-        var id = e.data.id;
+        for(let n = 0; n < 10000; n++)
+            {
+                pwd  = rand_pwd(8);
+                salt = get_salt(pwd);
+                hash = crypt3(pwd, salt);
         
-        if(e.data.type == 'found')
-            {
-                $('#target_'+id)[0].textContent = e.data.target;
-                $('#found_'+id)[0].textContent  = e.data.found;
-                $('#pwd_'+id)[0].textContent    = e.data.pwd;
-                $('#trip_'+id)[0].textContent   = e.data.trip;
-              //$('#tps_n')[0].textContent      = e.data.tps;
+                if(hash.match(this.target))
+                    {
+                        this.found++;
+                        this.postMessage
+                            ({
+                                'type'  : 'found',
+                                'id'    : id,
+                                'target': this.target,
+                                'found' : this.found,
+                                'pwd'   : pwd,
+                                'trip'  : hash,
+                                'trip_n': this.trip_n
+                            });
+
+                        console.log({'id': id, 'key': pwd, 'salt': salt, 'trip': hash, 'target': target});
+                    }
+        
+        
+                this.trip_n++;
+                if(this.trip_n%10000 == 0) {console.log(this.trip_n);}
             }
-        else if(e.data.type == 'tps')
-            {
-                tps[e.data.id] = e.data.tps;
-                
-                var tps_n = 0;
-                for(let n in tps) { tps_n += tps[n]; }
-                
-                $('#tps_n')[0].textContent = tps_n+' trips/s';
-            }
+        
+        send_tps();
+        setTimeout(main);
     }
 
-/**** Execute ****/
 
-/*********************
-* Initialize worker
-*********************/            
-window.onload = function()
-{
-    /***********************************
-    * Set text elements default value
-    ***********************************/
-    $('#target').val('Enter search here');
-    
-    
-    /******************************************
-    * Set text input worker message handlers
-    ******************************************/
-    $('#target').keypress( function(e)
-        {
-            if(e.which == 13)
-                {
-                    e.preventDefault();
-        
-                    var target = $('#target').val();
-                    var id     = Object.keys(pool).length;
-                    
-                    init_worker(target, id);
-                    
-                    add_search_table(target, id);
-                    
-                    $('#search_n')[0].textContent = id+1;
-                }
-        });
-}
+//---- Execution ---------------------------------------------------------------------------------------------------
+
+this.onmessage = function(e)
+    {
+        if (e.data.type == 'init')
+            {
+                var target_regex = new RegExp(e.data.target, 'i');
+                
+                this.id         = e.data.id;
+                this.target     = target_regex;
+                this.timeout    = e.data.timeout;
+                this.trip_n     = 0;
+                this.found      = 0;
+                this.start_time = new Date().getTime();
+                
+                this.main();
+            }
+        else if(e.data.type == 'target')   { target  = e.data.target;  }
+        else if(e.data.type == 'timeout')  { timeout = e.data.timeout; }
+        else if(e.data.type == 'pause')    { /** stop timeout **/ }
+        else if(e.data.type == 'continue') { main(); } ////
+        else if(e.data.type == 'stop')     { /** stop worker and remove search element **/ }
+    };
