@@ -60,7 +60,7 @@ function add_search_table(target, id)
 
 function init_worker(target, id)
     {                        
-        var worker = new Worker('js/tripper.js');
+        var worker = new Worker('tripper.js');
         worker.onmessage = on_worker_msg;
         pool[id] = worker;
                     
