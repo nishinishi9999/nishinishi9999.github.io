@@ -72,7 +72,7 @@ function log_trip(target, pwd, trip)
 
         $('#'+target).append(pwd_trip);
         
-        console.log($('#'+target));
+        //console.log($('#'+target));
     }
 
 function init_worker(target, id)
