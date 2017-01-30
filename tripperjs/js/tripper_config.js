@@ -1,8 +1,11 @@
 /**** Global variables ****/
 
-var default_to = 10;
-var tps        = {};
-var pool       = {};
+var default_to  = 10;
+var trips_found = 0;
+var tps         = {};
+var pool        = {};
+var log         = {};
+var thread_n    = 0;
 
 
 
@@ -12,12 +15,12 @@ function add_search_table(target, id)
     {
         var table =
               '<br><br>'
-            + '<center><table class="search_table search_table_'+id+'">'
+            + '<center><table class="search_table search_table_'+id+' search_screen">'
             + '    <tr class="search_tr">'
             + '        <th class="search_th">Target</th>'
             + '        <th class="search_th">Found</th>'
-            + '        <th class="search_th pwd_cell">Pwd</th>'
-            + '        <th class="search_th trip_cell">Trip</th>'
+            + '        <th class="search_th pwd_cell">Password</th>'
+            + '        <th class="search_th trip_cell">Tripcode</th>'
             + '        <th class="search_th">Timeout</th>'
             + '        <th class="search_th pause_cell">Pause</th>'
             + '        <th class="search_th remove_cell">Remove</th>'
@@ -57,20 +60,53 @@ function add_search_table(target, id)
             });
     }
 
+function log_trip(target, pwd, trip)
+    {
+        log[target].push([pwd, trip]);
+                
+        var pwd_trip =
+            '<tr>'
+          +     '<td>'+pwd+'</td>'
+          +     '<td>'+trip+'</td>'
+          + '</tr>';
+
+        $('#'+target).append(pwd_trip);
+        
+        console.log($('#'+target));
+    }
 
 function init_worker(target, id)
     {                        
-        var worker = new Worker('tripperjs/js/tripper.js');
+        var worker = new Worker('js/tripper.js');
         worker.onmessage = on_worker_msg;
+        
         pool[id] = worker;
+        
+        var target_regex = new RegExp(target, 'i');
+        log[target] = [];
                     
+        
         worker.postMessage
             ({
-                'type'   : 'init',
-                'id'     : id,
-                'target' : target,
-                'timeout': default_to
+                'type'        : 'init',
+                'id'          : id,
+                'target'      : target,
+                'target_regex': target_regex,
+                'timeout'     : default_to
             });
+
+        
+        var target_tag =
+            '<center>'  
+          + '<table id='+target+' class="log_table">'
+          +     '<tr>'
+          +         '<th>Password</th>'
+          +         '<th>Tripcode</th>'
+          +     '</tr>'
+          + '</table>'
+          + '</center>';
+        
+        $('#log_div').append(target_tag);
     }
 
 function on_worker_msg(e)
@@ -84,13 +120,21 @@ function on_worker_msg(e)
                 $('#pwd_'+id)[0].textContent    = e.data.pwd;
                 $('#trip_'+id)[0].textContent   = e.data.trip;
               //$('#tps_n')[0].textContent      = e.data.tps;
+              
+                trips_found++;
+                $('#found_n')[0].textContent = trips_found;
+                
+                
+                log_trip(e.data.target, e.data.pwd, e.data.trip);
+                
+                //console.log(trip_log);
             }
         else if(e.data.type == 'tps')
             {
                 tps[e.data.id] = e.data.tps;
                 
                 var tps_n = 0;
-                for(let n in tps) { tps_n += tps[n]; }
+                for(var n in tps) { tps_n += tps[n]; }
                 
                 $('#tps_n')[0].textContent = tps_n+' trips/s';
             }
@@ -103,10 +147,13 @@ function on_worker_msg(e)
 *********************/            
 window.onload = function()
 {
+    thread_n = window.navigator.hardwareConcurrency || ':(';
+    
     /***********************************
     * Set text elements default value
     ***********************************/
     $('#target').val('Enter search here');
+    $('#search_n')[0].textContent = '0/'+thread_n;
     
     
     /******************************************
@@ -125,7 +172,22 @@ window.onload = function()
                     
                     add_search_table(target, id);
                     
-                    $('#search_n')[0].textContent = id+1;
+                    $('#search_n')[0].textContent = (id+1)+'/'+thread_n;
                 }
+        });
+
+    /***************************
+    * Set trip_log click event
+    ***************************/
+    $('#trip_log').click( function(e)
+        {
+            $('.search_screen').toggle();
+            $('.log_screen').toggle();
+            
+            //if($('.log_screen').is(':visible'))
+            //    {
+            //        format_second_screen(); //// if search screen is not hidden
+            //    }
+            
         });
 }
