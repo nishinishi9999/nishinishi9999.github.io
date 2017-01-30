@@ -77,7 +77,7 @@ function log_trip(target, pwd, trip)
 
 function init_worker(target, id)
     {                        
-        var worker = new Worker('js/tripper.js');
+        var worker = new Worker('tripperjs/js/tripper.js');
         worker.onmessage = on_worker_msg;
         
         pool[id] = worker;
