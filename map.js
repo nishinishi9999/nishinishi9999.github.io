@@ -16,8 +16,8 @@ var tip;
 var svg = d3.select('#svg');
 
 var color_scale = d3.scale.linear()
-        .domain([-10, 30])
-        .range(['lightblue', 'darkblue']);
+        .domain([-3, 20])
+        .range(['blue', 'red']);
         
 
 /************
