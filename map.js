@@ -68,7 +68,7 @@ function draw_map()
             .projection( projection );
             
 
-        d3.json('./json/japan.geojson', function(err, jp)
+        d3.json('./japan.geojson', function(err, jp)
             {
                 if(err) { console.log(err); }
         
