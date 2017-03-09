@@ -55,14 +55,15 @@ function get_humidity(name, name_jp)
 
 function draw_map()
     {
-        var height = 800;
-        var width  = 800;
+        var height = 1920;
+        var width  = 1080;
 
         
         var projection = d3.geo.albers()
             .scale(3000)
             .center([-45, 141])
-            .rotate([180]);
+            .rotate([180])
+            .translate(height/2, width/2);
 
         var geo_path = d3.geo.path()
             .projection( projection );
