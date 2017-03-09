@@ -68,7 +68,7 @@ function draw_map()
             .projection( projection );
             
 
-        d3.json('./json/japan.geojson', function(err, jp)
+        d3.json('./japan.geojson', function(err, jp)
             {
                 if(err) { console.log(err); }
         
@@ -116,18 +116,6 @@ function draw_map()
                         get_humidity(name, name_jp);
                     }
             });
-
-        
-        var data = [];
-        for(var n = 0; n < 100; n++) { data.push(n); }
-        
-        provinces = $('.provinces');
-        /*
-        svg.selectAll('rect')
-            .data([data])
-            .enter()
-            .append(rect);
-        */
     }
 
 
