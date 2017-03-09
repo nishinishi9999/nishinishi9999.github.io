@@ -60,7 +60,7 @@ function draw_map()
 
         
         var projection = d3.geo.albers()
-            .scale(3000)
+            .scale(1000)
             .center([-45, 141])
             .rotate([180])
             .translate(width/2, height/2);
