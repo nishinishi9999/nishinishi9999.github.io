@@ -55,21 +55,20 @@ function get_humidity(name, name_jp)
 
 function draw_map()
     {
-        var height = 1920;
-        var width  = 1080;
+        var height = 800;
+        var width  = 800;
 
         
         var projection = d3.geo.albers()
-            .scale(500)
+            .scale(2000)
             .center([-45, 141])
-            .rotate([180])
-            .translate(width/2, height/2);
+            .rotate([180]);
 
         var geo_path = d3.geo.path()
             .projection( projection );
             
 
-        d3.json('./japan.geojson', function(err, jp)
+        d3.json('./json/japan.geojson', function(err, jp)
             {
                 if(err) { console.log(err); }
         
@@ -117,6 +116,18 @@ function draw_map()
                         get_humidity(name, name_jp);
                     }
             });
+
+        
+        var data = [];
+        for(var n = 0; n < 100; n++) { data.push(n); }
+        
+        provinces = $('.provinces');
+        /*
+        svg.selectAll('rect')
+            .data([data])
+            .enter()
+            .append(rect);
+        */
     }
 
 
