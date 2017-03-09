@@ -1,11 +1,11 @@
-/*********
+/***********
 * map.js
-*********/
+***********/
 
 /************
 * Constants
 ************/
-const API_KEY = '62261a49d1a79b9462e1372237e1a75b';
+const API_KEY = 'a81aedebf38b8d08c11610d2129efa2b';
 
 
 /*******************
@@ -18,12 +18,12 @@ var svg = d3.select('#svg');
 var color_scale = d3.scale.linear()
         .domain([-10, 30])
         .range(['lightblue', 'darkblue']);
-
+        
 
 /************
 * Functions
 ************/
-function get_humidity(name, name_jp)
+function get_data(name, name_jp)
     {
         var url = 'http://api.openweathermap.org/data/2.5/weather?'
             + 'q=' + name + ',jp'
@@ -33,9 +33,6 @@ function get_humidity(name, name_jp)
         
         $.get( encodeURI(url), function(data)
             {
-                console.log(data);
-                var temp = data.main.temp;
-                
                 var el = $('#'+name);
                 
                 el.attr('temp',     data.main.temp);
@@ -44,12 +41,8 @@ function get_humidity(name, name_jp)
                 el.attr('temp_max', data.main.temp_max);
                 el.attr('temp_min', data.main.temp_min);
                 el.attr('name_jp',  name_jp);
-                console.log(name_jp);
                 
-                el.css('fill', color_scale(temp));
-                
-                
-                setTimeout( function(){ get_humidity(name, name_jp); 3600000 } );
+                el.css('fill', color_scale(data.main.temp));
             });
     }
 
@@ -94,11 +87,13 @@ function draw_map()
                            
                            tip.text(text);
                             
+                           
                            var [x, y] = d3.mouse(this);
                            tip.css('top',  y-150 + 'px');
                            tip.css('left', x-150 + 'px');
                            
-                           tip.show();
+                           
+                            tip.show();
                         })
                     .on('mouseleave', function(d, i)
                         {
@@ -113,22 +108,21 @@ function draw_map()
                         var name    = jp.features[i].properties.nam.split(' ').join('_');
                         var name_jp = jp.features[i].properties.nam_ja;
                         
-                        get_humidity(name, name_jp);
+                        repeat(name, name_jp, i);
+                        console.log(i, name);
                     }
             });
-
-        
-        var data = [];
-        for(var n = 0; n < 100; n++) { data.push(n); }
-        
-        provinces = $('.provinces');
-        /*
-        svg.selectAll('rect')
-            .data([data])
-            .enter()
-            .append(rect);
-        */
     }
 
+function repeat(name, name_jp, i)
+    {
+        setTimeout( function() { get_data(name, name_jp) }, i*100);
+        setTimeout( function() { repeat(name, name_jp, i); }, 3600000 );
+    }
+
+
+/************
+* Execution
+************/
 
 draw_map();
