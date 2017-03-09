@@ -1,0 +1,37 @@
+body {
+    background-color: white;
+}
+path {
+    stroke: white;
+    stroke-width: 0.15px;
+}
+#svg {
+    width: 100%;
+    height: 100%;
+}
+#tip {
+    position: absolute;
+    display: none;
+    
+    white-space: pre;
+    
+    border-radius: 8%;
+    padding-top: 4px;
+    
+    width: 120px;
+    height: 120px;
+    
+    background-color: white;
+    border: 1px solid black;
+    
+    z-index: 2;
+}
+
+.province {
+    fill: grey;
+}
+.province:hover {
+    transition-duration: 400ms;
+    stroke-width: 1px;
+    fill: greenyellow !important;
+}
