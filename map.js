@@ -30,7 +30,7 @@ function get_humidity(name, name_jp)
             + '&units=metric'
             + '&appid=' + API_KEY;
 
-        /*
+        
         $.get( encodeURI(url), function(data)
             {
                 console.log(data);
@@ -50,7 +50,7 @@ function get_humidity(name, name_jp)
                 
                 
                 setTimeout( function(){ get_humidity(name, name_jp); 3600000 } );
-            });*/
+            });
     }
 
 function draw_map()
