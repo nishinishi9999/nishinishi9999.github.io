@@ -1,0 +1,12 @@
+{
+  "name": "d3.v3.min",
+  "_cacheHeaders": {
+    "Last-Modified": "Wed, 25 Oct 2017 17:26:56 GMT",
+    "Content-Type": "application/javascript; charset=utf-8"
+  },
+  "main": "index.js",
+  "_source": "http://d3js.org/d3.v3.min.js",
+  "_target": "*",
+  "_originalSource": "http://d3js.org/d3.v3.min.js",
+  "_direct": true
+}
